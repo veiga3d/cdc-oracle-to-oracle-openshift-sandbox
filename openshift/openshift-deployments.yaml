@@ -40,19 +40,19 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kafka
+  name: kafka-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kafka
+      app: kafka-service
   template:
     metadata:
       labels:
-        app: kafka
+        app: kafka-service
     spec:
       containers:
-        - name: kafka
+        - name: kafka-service
           image: confluentinc/cp-kafka:7.6.0
           ports:
             - containerPort: 9092
@@ -79,10 +79,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: kafka
+  name: kafka-service
 spec:
   selector:
-    app: kafka
+    app: kafka-service
   ports:
     - protocol: TCP
       port: 9092
