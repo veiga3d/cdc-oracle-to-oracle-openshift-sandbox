@@ -1,1 +1,45 @@
-// JSON de exemplo do Oracle Source
+{
+  "name": "oracle-source-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.oracle.OracleConnector",
+    "tasks.max": "1",
+
+    "database.hostname": "oracle-source",
+    "database.port": "1521",
+    "database.user": "C##CDC_USER",
+    "database.password": "CDC_USER",
+    "database.dbname": "ORCLCDB",
+    "database.pdb.name": "ORCLPDB1",
+    "database.server.name": "oracle-source",
+
+    "database.connection.adapter": "logminer",
+    "database.out.server.name": "dbzxout",
+
+    "table.include.list": "C##CDC_USER.TABELA1",
+
+    "schema.history.internal.kafka.bootstrap.servers": "kafka:9092",
+    "schema.history.internal.kafka.topic": "schema-changes.oracle",
+
+    "include.schema.changes": "false",
+    "topic.prefix": "oracle-source-cdc",
+
+    "decimal.handling.mode": "double",
+    "binary.handling.mode": "base64",
+
+    "transforms": "unwrap,castKey,convertMicrosToMillis",
+    
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": "true",
+
+    "transforms.castKey.type": "org.apache.kafka.connect.transforms.Cast$Key",
+    "transforms.castKey.spec": "ID:int64",
+
+    "transforms.convertMicrosToMillis.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.convertMicrosToMillis.field": "ATUALIZADO_EM",
+    "transforms.convertMicrosToMillis.unix.precision": "microseconds",
+    "transforms.convertMicrosToMillis.target.type": "Timestamp"
+
+   
+
+  }
+}

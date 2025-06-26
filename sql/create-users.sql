@@ -1,1 +1,0 @@
--- Script para criar usuários Oracle

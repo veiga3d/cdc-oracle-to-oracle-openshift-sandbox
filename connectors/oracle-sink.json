@@ -1,1 +1,30 @@
-// JSON de exemplo do Oracle Sink
+{
+  "name": "oracle-jdbc-sink",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "tasks.max": "1",
+    "topics": "oracle-source-cdc.C__CDC_USER.TABELA1",
+    "connection.url": "jdbc:oracle:thin:@oracle-destination:1521/ORCLPDB1",
+    "connection.user": "SINK_USER",
+    "connection.password": "SINK_USER",
+    
+    "insert.mode": "upsert",
+    "pk.mode": "record_value",
+    "pk.fields": "ID",
+    "delete.enabled": "false",
+    
+    "table.name.format": "TABELA1",
+    
+    "auto.create": "false",
+    "auto.evolve": "false",
+    
+    "transforms": "unwrap,dropDeletedField",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": "true",
+    "transforms.unwrap.delete.handling.mode": "rewrite",
+
+    "transforms.dropDeletedField.type": "org.apache.kafka.connect.transforms.ReplaceField$Value",
+    "transforms.dropDeletedField.blacklist": "__deleted"
+
+  }
+}
