@@ -54,6 +54,9 @@ spec:
       containers:
         - name: kafka-cdc-service
           image: confluentinc/cp-kafka:7.6.0
+          command: ["/etc/confluent/docker/run"]
+          depends_on:
+            - zookeeper
           ports:
             - containerPort: 9092
             - containerPort: 29092
