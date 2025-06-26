@@ -40,19 +40,19 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kafka-service
+  name: kafka-cdc-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kafka-service
+      app: kafka-cdc-service
   template:
     metadata:
       labels:
-        app: kafka-service
+        app: kafka-cdc-service
     spec:
       containers:
-        - name: kafka-service
+        - name: kafka-cdc-service
           image: confluentinc/cp-kafka:7.6.0
           ports:
             - containerPort: 9092
@@ -65,8 +65,6 @@ spec:
               value: "PLAINTEXT:PLAINTEXT"
             - name: KAFKA_ADVERTISED_LISTENERS
               value: "PLAINTEXT://kafka:9092"
-            - name: KAFKA_LISTENERS
-              value: "PLAINTEXT://0.0.0.0:9092"
             - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
               value: "1"
             - name: KAFKA_TRANSACTION_STATE_LOG_MIN_ISR
@@ -79,10 +77,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: kafka-service
+  name: kafka-cdc-service
 spec:
   selector:
-    app: kafka-service
+    app: kafka-cdc-service
   ports:
     - protocol: TCP
       port: 9092
