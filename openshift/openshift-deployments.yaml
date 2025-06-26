@@ -54,7 +54,10 @@ spec:
       containers:
         - name: kafka-cdc-service
           image: confluentinc/cp-kafka:7.6.0
-          command: ["/etc/confluent/docker/run"]
+          command: ["/bin/bash", "-c"]
+          args:
+            - |
+              exec kafka-server-start /etc/kafka/server.properties
           depends_on:
             - zookeeper
           ports:
