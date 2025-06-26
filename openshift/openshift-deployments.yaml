@@ -66,7 +66,7 @@ spec:
             - name: KAFKA_ADVERTISED_LISTENERS
               value: "PLAINTEXT://kafka-cdc-service:9092,PLAINTEXT_HOST://localhost:29092"
             - name: KAFKA_LISTENERS
-              value: "PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:29092"
+              value: "PLAINTEXT:///kafka-cdc-service:9092,PLAINTEXT_HOST://0.0.0.0:29092"
             - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
               value: "1"
             - name: KAFKA_TRANSACTION_STATE_LOG_MIN_ISR
