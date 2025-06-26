@@ -83,10 +83,12 @@ spec:
   selector:
     app: kafka-cdc-service
   ports:
-    - protocol: TCP
+    - name: client
+      protocol: TCP
       port: 9092
       targetPort: 9092
-    - protocol: TCP
+    - name: host
+      protocol: TCP
       port: 29092
       targetPort: 29092
 ---
