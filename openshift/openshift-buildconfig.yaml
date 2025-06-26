@@ -1,19 +1,36 @@
+# Criação do ImageStream que receberá a imagem gerada pelo BuildConfig
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: kafka-connect-oracle-cdc
+  labels:
+    app: kafka-connect
+
+---
+
+# BuildConfig que gera a imagem do Kafka Connect com Debezium e JDBC Sink
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
   name: kafka-connect-build
+  labels:
+    app: kafka-connect
 spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: kafka-connect-oracle-cdc:latest
   source:
     type: Git
     git:
-      uri: https://github.com/seu-usuario/seu-repo.git
+      uri: https://github.com/veiga3d/cdc-oracle-to-oracle-openshift-sandbox.git
       ref: main
     contextDir: .
   strategy:
     type: Docker
     dockerStrategy:
       dockerfilePath: Dockerfile
-  output:
-    to:
-      kind: ImageStreamTag
-      name: kafka-connect-oracle-cdc:latest
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+  runPolicy: Serial
