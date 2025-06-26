@@ -1,0 +1,91 @@
+# Oracle Source Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oracle-source
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oracle-source
+  template:
+    metadata:
+      labels:
+        app: oracle-source
+    spec:
+      containers:
+        - name: oracle-source
+          image: oracle/database:19.3.0-ee
+          ports:
+            - containerPort: 1521
+          env:
+            - name: ORACLE_PWD
+              value: "Oradoc_db1"
+            - name: ORACLE_SID
+              value: "ORCLCDB"
+            - name: ORACLE_PDB
+              value: "ORCLPDB1"
+          volumeMounts:
+            - name: oracle-data
+              mountPath: /opt/oracle/oradata
+      volumes:
+        - name: oracle-data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oracle-source
+spec:
+  selector:
+    app: oracle-source
+  ports:
+    - protocol: TCP
+      port: 1521
+      targetPort: 1521
+---
+# Oracle Sink Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oracle-sink
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oracle-sink
+  template:
+    metadata:
+      labels:
+        app: oracle-sink
+    spec:
+      containers:
+        - name: oracle-sink
+          image: oracle/database:19.3.0-ee
+          ports:
+            - containerPort: 1521
+          env:
+            - name: ORACLE_PWD
+              value: "Oradoc_db1"
+            - name: ORACLE_SID
+              value: "ORCLCDB"
+            - name: ORACLE_PDB
+              value: "ORCLPDB1"
+          volumeMounts:
+            - name: oracle-data
+              mountPath: /opt/oracle/oradata
+      volumes:
+        - name: oracle-data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oracle-sink
+spec:
+  selector:
+    app: oracle-sink
+  ports:
+    - protocol: TCP
+      port: 1521
+      targetPort: 1521
