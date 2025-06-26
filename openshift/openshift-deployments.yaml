@@ -54,8 +54,6 @@ spec:
       containers:
         - name: kafka-cdc-service
           image: confluentinc/cp-kafka:7.6.0
-          command: ["/bin/bash", "-c"]
-          args: ["exec kafka-server-start /etc/kafka/server.properties"]
           depends_on:
             - zookeeper
           ports:
@@ -82,6 +80,8 @@ spec:
               value: "0"
             - name: KAFKA_INTER_BROKER_LISTENER_NAME
               value: "PLAINTEXT"
+            - name: COMPONENT
+              value: kafka
           volumeMounts:
             - name: kafka-data
               mountPath: /var/lib/kafka/data
