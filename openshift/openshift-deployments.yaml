@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-connect
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-connect
+  template:
+    metadata:
+      labels:
+        app: kafka-connect
+    spec:
+      containers:
+      - name: kafka-connect
+        image: image-registry.openshift-image-registry.svc:5000/seu-projeto/kafka-connect-oracle-cdc:latest
+        ports:
+        - containerPort: 8083
+        volumeMounts:
+        - name: connectors
+          mountPath: /connectors
+      volumes:
+      - name: connectors
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-connect
+spec:
+  ports:
+    - port: 8083
+      targetPort: 8083
+  selector:
+    app: kafka-connect
